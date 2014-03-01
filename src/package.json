@@ -1,6 +1,6 @@
 {
-	"author":"Dipesh Pate",
-	"name": "node-resque",
+	"author":"Dipesh Patel",
+	"name": "node-simple-queue",
 	"description": "A simple queue for NodeJS, with usage similar to Resque in RoR",
 	"version": "0.1.0",
 	"private": false,
