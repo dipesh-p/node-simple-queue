@@ -4,8 +4,7 @@ node-simple-queue
 A simple queue for NodeJS, with usage similar to Resque in RoR
 
 
-Installing module in Node Applicaiton
-=====================================
+### Installing module in Node Applicaiton
 
 ```node
 $> npm install node-simple-queue
