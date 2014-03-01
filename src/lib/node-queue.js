@@ -5,7 +5,6 @@ var path=require('path');
 function NodeQueue(db_config){
 	try{
 		db.ConnectToDB(db_config);
-		require('job.js');
 		this.enqueueJob=function(queue_name,job,params){
 			Job.enqueueJob(queue_name,job,params,function(err,res){
 
