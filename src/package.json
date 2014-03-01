@@ -14,7 +14,7 @@
 			"url": "https://github.com/masterdipesh/node-queue/blob/master/LICENSE"
 		}
 	],
-	"mail":"./lib/node-queue.js",
+	"main":"./lib/node-queue.js",
 	"keywords":[
 		"queue",
 		"resque",
