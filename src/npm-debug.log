@@ -1,0 +1,144 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.3.5
+3 info using node@v0.10.15
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /Users/masterdipesh/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz',
+10 verbose tar pack   '.' ]
+11 verbose tarball /var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz
+12 verbose folder .
+13 info prepublish node-resque@0.1.0
+14 silly lockFile 1f1177db-tar tar://.
+15 verbose lock tar://. /Users/masterdipesh/.npm/1f1177db-tar.lock
+16 silly lockFile 2e068b73-9627-0-25960758165456355-tmp-tgz tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz
+17 verbose lock tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz /Users/masterdipesh/.npm/2e068b73-9627-0-25960758165456355-tmp-tgz.lock
+18 silly lockFile 1f1177db-tar tar://.
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 2e068b73-9627-0-25960758165456355-tmp-tgz tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz
+21 silly lockFile 2e068b73-9627-0-25960758165456355-tmp-tgz tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz
+22 verbose tar unpack /var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz
+23 silly lockFile dabe22c9-9627-0-25960758165456355-package tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package
+24 verbose lock tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package /Users/masterdipesh/.npm/dabe22c9-9627-0-25960758165456355-package.lock
+25 silly lockFile 2e068b73-9627-0-25960758165456355-tmp-tgz tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz
+26 verbose lock tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz /Users/masterdipesh/.npm/2e068b73-9627-0-25960758165456355-tmp-tgz.lock
+27 silly gunzTarPerm modes [ '755', '644' ]
+28 silly gunzTarPerm extractEntry package.json
+29 silly gunzTarPerm extractEntry README.md
+30 silly gunzTarPerm extractEntry bin/node-worker
+31 silly gunzTarPerm extractEntry lib/db.js
+32 silly gunzTarPerm extractEntry lib/job.js
+33 silly gunzTarPerm extractEntry lib/node-queue.js
+34 silly gunzTarPerm extractEntry lib/queue.js
+35 silly gunzTarPerm extractEntry lib/worker.js
+36 silly gunzTarPerm extractEntry lib/worker_process.js
+37 silly lockFile dabe22c9-9627-0-25960758165456355-package tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package
+38 silly lockFile dabe22c9-9627-0-25960758165456355-package tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package
+39 silly lockFile 2e068b73-9627-0-25960758165456355-tmp-tgz tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz
+40 silly lockFile 2e068b73-9627-0-25960758165456355-tmp-tgz tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/tmp.tgz
+41 verbose tar pack [ '/Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz',
+41 verbose tar pack   '/var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package' ]
+42 verbose tarball /Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz
+43 verbose folder /var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package
+44 silly lockFile dabe22c9-9627-0-25960758165456355-package tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package
+45 verbose lock tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package /Users/masterdipesh/.npm/dabe22c9-9627-0-25960758165456355-package.lock
+46 silly lockFile 9d26f4fe-pm-node-resque-0-1-0-package-tgz tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz
+47 verbose lock tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz /Users/masterdipesh/.npm/9d26f4fe-pm-node-resque-0-1-0-package-tgz.lock
+48 silly lockFile dabe22c9-9627-0-25960758165456355-package tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package
+49 silly lockFile dabe22c9-9627-0-25960758165456355-package tar:///var/folders/34/xv8w33c10kx93v1_sfbj9f7r0000gn/T/npm-3826-zTzXodQp/1393680339627-0.25960758165456355/package
+50 silly lockFile 9d26f4fe-pm-node-resque-0-1-0-package-tgz tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz
+51 silly lockFile 9d26f4fe-pm-node-resque-0-1-0-package-tgz tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz
+52 silly lockFile 180da994-sh-npm-node-resque-0-1-0-package /Users/masterdipesh/.npm/node-resque/0.1.0/package
+53 verbose lock /Users/masterdipesh/.npm/node-resque/0.1.0/package /Users/masterdipesh/.npm/180da994-sh-npm-node-resque-0-1-0-package.lock
+54 silly lockFile 180da994-sh-npm-node-resque-0-1-0-package /Users/masterdipesh/.npm/node-resque/0.1.0/package
+55 silly lockFile 180da994-sh-npm-node-resque-0-1-0-package /Users/masterdipesh/.npm/node-resque/0.1.0/package
+56 verbose tar unpack /Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz
+57 silly lockFile 85295bf7-sh-npm-node-resque-0-1-0-package tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package
+58 verbose lock tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package /Users/masterdipesh/.npm/85295bf7-sh-npm-node-resque-0-1-0-package.lock
+59 silly lockFile 9d26f4fe-pm-node-resque-0-1-0-package-tgz tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz
+60 verbose lock tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz /Users/masterdipesh/.npm/9d26f4fe-pm-node-resque-0-1-0-package-tgz.lock
+61 silly gunzTarPerm modes [ '755', '644' ]
+62 silly gunzTarPerm extractEntry package.json
+63 silly gunzTarPerm extractEntry README.md
+64 silly gunzTarPerm extractEntry bin/node-worker
+65 silly gunzTarPerm extractEntry lib/db.js
+66 silly gunzTarPerm extractEntry lib/job.js
+67 silly gunzTarPerm extractEntry lib/node-queue.js
+68 silly gunzTarPerm extractEntry lib/queue.js
+69 silly gunzTarPerm extractEntry lib/worker.js
+70 silly gunzTarPerm extractEntry lib/worker_process.js
+71 silly lockFile 85295bf7-sh-npm-node-resque-0-1-0-package tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package
+72 silly lockFile 85295bf7-sh-npm-node-resque-0-1-0-package tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package
+73 silly lockFile 9d26f4fe-pm-node-resque-0-1-0-package-tgz tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz
+74 silly lockFile 9d26f4fe-pm-node-resque-0-1-0-package-tgz tar:///Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz
+75 verbose chmod /Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz 644
+76 verbose chown /Users/masterdipesh/.npm/node-resque/0.1.0/package.tgz [ 501, 20 ]
+77 silly lockFile 3a52ce78- .
+78 silly lockFile 3a52ce78- .
+79 silly publish { author: { name: 'Dipesh Pate' },
+79 silly publish   name: 'node-resque',
+79 silly publish   description: 'A simple queue for NodeJS, with usage similar to Resque in RoR',
+79 silly publish   version: '0.1.0',
+79 silly publish   private: false,
+79 silly publish   repository: { type: 'git', url: 'git://github.com/masterdipesh/node-queue' },
+79 silly publish   license:
+79 silly publish    [ { type: 'MIT',
+79 silly publish        url: 'https://github.com/masterdipesh/node-queue/blob/master/LICENSE' } ],
+79 silly publish   mail: './lib/node-queue.js',
+79 silly publish   keywords: [ 'queue', 'resque', 'simple queue' ],
+79 silly publish   bin: { 'node-worker': './bin/node-worker' },
+79 silly publish   dependencies: { mongoose: '>= 2.6.0', async: '~0.2.10' },
+79 silly publish   engine: { node: '*' },
+79 silly publish   readme: 'node-queue\n---------------------\n\nA simple queue for NodeJS, with usage similar to Resque in RoR',
+79 silly publish   readmeFilename: 'README.md',
+79 silly publish   bugs: { url: 'https://github.com/masterdipesh/node-queue/issues' },
+79 silly publish   _id: 'node-resque@0.1.0',
+79 silly publish   dist: { shasum: 'c77e90b2e2dbd1f9cfbb5faa37a289ce169e18af' },
+79 silly publish   _from: '.' }
+80 verbose url raw node-resque
+81 verbose url resolving [ 'https://registry.npmjs.org/', './node-resque' ]
+82 verbose url resolved https://registry.npmjs.org/node-resque
+83 info trying registry request attempt 1 at 18:55:39
+84 http PUT https://registry.npmjs.org/node-resque
+85 http 403 https://registry.npmjs.org/node-resque
+86 info trying registry request attempt 1 at 18:55:45
+87 http PUT https://registry.npmjs.org/node-resque
+88 http 403 https://registry.npmjs.org/node-resque
+89 error publish Failed PUT response 403
+90 error Error: forbidden user: masterdipesh not authorized to modify node-resque
+90 error Changed: readme "# node-resque\u000aDelayed Tasks in nodejs.  A very opinionated but compatible API with [resque](https://github.com/resque/resque) and [resque scheduler](https://github.com/resque/resque-scheduler)\u000a\u000a[![Nodei stats](https://nodei.co/npm/node-resque.png?downloads=true)](https://npmjs.org/package/node-resque)\u000a\u000a[![Build Status](https://secure.travis-ci.org/taskrabbit/node-resque.png?branch=master)](http://travis-ci.org/taskrabbit/node-resque)\u000a\u000a## Usage\u000a\u000aI learn best by examples:\u000a\u000a```javascript\u000a/////////////////////////\u000a// REQUIRE THE PACKAGE //\u000a/////////////////////////\u000a\u000avar NR = require(\"node-resque\");\u000a\u000a///////////////////////////\u000a// SET UP THE CONNECTION //\u000a///////////////////////////\u000a\u000avar connectionDetails = {\u000a  host:      \"127.0.0.1\",\u000a  password:  \"\",\u000a  port:      6379,\u000a  database:  0,\u000a}\u000a\u000a//////////////////////////////\u000a// DEFINE YOUR WORKER TASKS //\u000a//////////////////////////////\u000a\u000avar jobs = {\u000a  \"add\": {\u000a    perform: function(a,b,callback){\u000a      var answer = a + b;\u000a      callback(null, answer);\u000a    },\u000a  },\u000a  \"subtract\": {\u000a    perform: function(a,b,callback){\u000a      var answer = a - b;\u000a      callback(null, answer);\u000a    },\u000a  },\u000a};\u000a\u000a////////////////////\u000a// START A WORKER //\u000a////////////////////\u000a\u000avar worker = new NR.worker({connection: connectionDetails, queues: ['math']}, jobs, function(){\u000a  worker.workerCleanup(); // optional: cleanup any previous improperly shutdown workers\u000a  worker.start();\u000a});\u000a\u000a///////////////////////\u000a// START A SCHEDULER //\u000a///////////////////////\u000a\u000avar scheduler = new NR.scheduler({connection: connectionDetails}, function(){\u000a  scheduler.start();\u000a});\u000a\u000a/////////////////////////\u000a// REGESTER FOR EVENTS //\u000a/////////////////////////\u000a\u000aworker.on('start',           function(){ console.log(\"worker started\"); })\u000aworker.on('end',             function(){ console.log(\"worker ended\"); })\u000aworker.on('cleaning_worker', function(worker, pid){ console.log(\"cleaning old worker \" + worker); })\u000aworker.on('poll',            function(queue){ console.log(\"worker polling \" + queue); })\u000aworker.on('job',             function(queue, job){ console.log(\"working job \" + queue + \" \" + JSON.stringify(job)); })\u000aworker.on('reEnqueue',       function(queue, job, plugin){ console.log(\"reEnqueue job (\" + plugin + \") \" + queue + \" \" + JSON.stringify(job)); })\u000aworker.on('success',         function(queue, job, result){ console.log(\"job success \" + queue + \" \" + JSON.stringify(job) + \" >> \" + result); })\u000aworker.on('error',           function(queue, job, error){ console.log(\"job failed \" + queue + \" \" + JSON.stringify(job) + \" >> \" + error); })\u000aworker.on('pause',           function(){ console.log(\"worker paused\"); })\u000a\u000ascheduler.on('start',             function(){ console.log(\"scheduler started\"); })\u000ascheduler.on('end',               function(){ console.log(\"scheduler ended\"); })\u000ascheduler.on('poll',              function(){ console.log(\"scheduler polling\"); })\u000ascheduler.on('working_timestamp', function(timestamp){ console.log(\"scheduler working timestamp \" + timestamp); })\u000ascheduler.on('transferred_job',    function(timestamp, job){ console.log(\"scheduler enquing job \" + timestamp + \" >> \" + JSON.stringify(job)); })\u000a\u000a////////////////////////\u000a// CONNECT TO A QUEUE //\u000a////////////////////////\u000a\u000avar queue = new NR.queue({connection: connectionDetails}, jobs, function(){\u000a  queue.enqueue('math', \"add\", [1,2]);\u000a  queue.enqueue('math', \"add\", [2,3]);\u000a  queue.enqueueIn(3000, 'math', \"subtract\", [2,1]);\u000a});\u000a```\u000a\u000a## Configutation Options:\u000a\u000a`new queue` requires only the \"queue\" variable to be set.  You can also pass the `jobs` hash to it.\u000a\u000a`new worker` has some additonal options:\u000a\u000a```javascript\u000aoptions = {\u000a  looping: true,\u000a  timeout: 5000,\u000a  queues:  \"*\",\u000a  name:    os.hostname() + \":\" + process.pid\u000a}\u000a```\u000a\u000aThe configuration hash passed to `new worker`, `new scheduler` or `new queue` can also take a `connection` option.\u000a\u000a```javascript\u000avar connectionDetails = {\u000a  host:      \"127.0.0.1\",\u000a  password:  \"\",\u000a  port:      6379,\u000a  database:  0,\u000a  namespace: \"resque\",\u000a}\u000a\u000avar worker = new NR.worker({connection: connectionDetails, queues: 'math'}, jobs, function(){\u000a  worker.start();\u000a});\u000a```\u000a\u000a## Notes\u000a- Be sure to call `worker.end()` before shutting down your application if you want to properly clear your worker status from resque\u000a- When ending your application, be sure to allow your workers time to finsih what they are working on\u000a- `worker.workerCleanup()` only works for *nix operating systems (osx, unix, solaris, etc)\u000a- If you are using any plugins which effect `beforeEnqueue` or `afterEnqueue`, be sure to pass the `jobs` argument to the `new Queue` constructor\u000a- If you plan to run more than one worker per nodejs process, be sure to name them something distinct.  Names **must** follow the patern `hostname:pid+unique_id`.  For example:\u000a\u000a```javascript\u000avar name = os.hostname() + \":\" + process.pid() + \"+\" + counter;\u000avar worker = new NR.worker({connection: connectionDetails, queues: 'math', 'name' : name}, jobs);\u000a```\u000a## Queue Managment\u000a\u000aAdditonal methods provided on the `queue` object:\u000a\u000a- **queue.prototype.queues** = function(callback)\u000a  - callback(error, array_of_queues)\u000a- **queue.prototype.length** = function(q, callback)\u000a  - callback(error, number_of_elements_in_queue)\u000a- **queue.prototype.del** = function(q, func, args, count, callback)\u000a  - callback(error, number_of_items_deleted)\u000a- **queue.prototype.delDelayed** = function(q, func, args, callback)\u000a  - callback(error, timestamps_the_job_was_removed_from)\u000a- **queue.prototype.scheduledAt** = function(q, func, args, callback)\u000a  - callback(error, timestamps_the_job_is_scheduled_for)\u000a\u000a## Plugins\u000a\u000aJust like ruby's resque, you can write worker plugins.  They look look like this.  The 4 hooks you have are `before_enqueue`, `after_enqueue`, `before_perform`, and `after_perform`\u000a\u000a```javascript\u000a\u000avar myPlugin = function(worker, func, queue, job, args, options){\u000a  var self = this;\u000a  self.name = 'myPlugin';\u000a  self.worker = worker;\u000a  self.queue = queue;\u000a  self.func = func;\u000a  self.job = job;\u000a  self.args = args;\u000a  self.options = options;\u000a}\u000a\u000a////////////////////\u000a// PLUGIN METHODS //\u000a////////////////////\u000a\u000amyPlugin.prototype.before_enqueue = function(callback){\u000a  // console.log(\"** before_enqueue\")\u000a  callback(null, true);\u000a}\u000a\u000amyPlugin.prototype.after_enqueue = function(callback){\u000a  // console.log(\"** after_enqueue\")\u000a  callback(null, true);\u000a}\u000a\u000amyPlugin.prototype.before_perform = function(callback){\u000a  // console.log(\"** before_perform\")\u000a  callback(null, true);\u000a}\u000a\u000amyPlugin.prototype.after_perform = function(callback){\u000a  // console.log(\"** after_perform\")\u000a  callback(null, true);\u000a}\u000a\u000a```\u000a\u000aAnd then your plugin can be invoked within a job like this:\u000a\u000a```javascript\u000avar jobs = {\u000a  \"add\": {\u000a    plugins: [ 'myPlugin' ],\u000a    pluginOptions: {\u000a      myPlugin: { thing: 'stuff' },\u000a    },\u000a    perform: function(a,b,callback){\u000a      var answer = a + b;\u000a      callback(null, answer);\u000a    },\u000a  },\u000a}\u000a```\u000a\u000a**notes**\u000a\u000a- All plugins which return `(error, toRun)`.  if `toRun = false` on  `beforeEnqueue`, the job beign inqueued will be thrown away, and if `toRun = false` on `beforePerfporm`, the job will be reEnqued and not run at this time.  However, it doesn't really matter what `toRun` returns on the `after` hooks.\u000a\u000a- There are a few included plugins, all in the lib/plugins/* directory. You can rewrite you own and include it like this:\u000a\u000a```javascript\u000avar jobs = {\u000a  \"add\": {\u000a    plugins: [ require('myplugin') ],\u000a    pluginOptions: {\u000a      myPlugin: { thing: 'stuff' },\u000a    },\u000a    perform: function(a,b,callback){\u000a      var answer = a + b;\u000a      callback(null, answer);\u000a    },\u000a  },\u000a}\u000a```\u000a\u000a## Acknowledgments\u000aMost of this code was inspired by / stolen from [coffee-resque](https://npmjs.org/package/coffee-resque) and [coffee-resque-scheduler](https://github.com/leeadkins/coffee-resque-scheduler).  Thanks!\u000a" -> "node-queue\u000a---------------------\u000a\u000aA simple queue for NodeJS, with usage similar to Resque in RoR"
+90 error Changed: time.modified "2014-02-05T00:45:10.782Z" -> "2014-03-01T13:25:46.055Z": node-resque
+90 error     at RegClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:272:14)
+90 error     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/index.js:148:22)
+90 error     at Request.EventEmitter.emit (events.js:98:17)
+90 error     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/index.js:876:14)
+90 error     at Request.EventEmitter.emit (events.js:117:20)
+90 error     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/index.js:827:12)
+90 error     at IncomingMessage.EventEmitter.emit (events.js:117:20)
+90 error     at _stream_readable.js:910:16
+90 error     at process._tickCallback (node.js:415:13)
+91 error If you need help, you may report this log at:
+91 error     <http://github.com/isaacs/npm/issues>
+91 error or email it to:
+91 error     <npm-@googlegroups.com>
+92 error System Darwin 13.0.0
+93 error command "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+94 error cwd /Users/masterdipesh/eclipse-workspace/node-resque/src
+95 error node -v v0.10.15
+96 error npm -v 1.3.5
+97 verbose exit [ 1, true ]

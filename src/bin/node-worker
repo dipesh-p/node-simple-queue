@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+"use strict";
+if(process.argv.length > 3) {
+	var path = require('path');
+	var fs= require('fs');
+	var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../lib');
+	var NodeWorker=require(lib+'/node-queue.js').NodeWorker;
+
+	var node_worker=new NodeWorker();
+	var workers=0;
+	var queue="";
+
+	for(var i=0;i<process.argv.length;i++){
+		var param=process.argv[i];
+		if(param.indexOf('QUEUE=')==0){
+			queue=param.replace("QUEUE=","");
+		}else if(param.indexOf('WORKERS=')==0){
+			workers=parseInt(param.replace('WORKERS=',''));
+		}
+	}
+	if(workers==0) workers=1;
+	if(queue==""){
+		console.log("ERROR: Invalid Parameter -- below is the use case");
+	 	console.log("node-worker QUEUE=queue1 WORKERS=2");
+	}else
+		node_worker.startWorkers(queue,workers);
+}else{
+	 console.log("ERROR: Invalid Parameter -- below is the use case");
+	 console.log("node-worker QUEUE=queue1 WORKERS=2");
+}
