@@ -1,13 +1,13 @@
 "use strict"
 var path=require('path');
 var DB=require(path.resolve('.',__dirname+'/db.js')).DB;
-var db=new DB('MongoDB');
+var db={};
 var queue="";
 process.on('message',function(worker){
 	queue=worker.queue;
 
 	try{
-		db.ConnectToDB(worker.db_config);
+		db=new DB('MongoDB',worker.db_config);
 		setTimeout(checkForJob,2000);
 	}catch(e){
 		console.log(e);
@@ -19,7 +19,7 @@ function checkForJob(){
 	db.Job.getNextJobsToDo(queue,process.pid,function(err,job){
 		if(job){
 			try{
-				require(path.resolve('.',job['CLASS_NAME']+'.js'));
+				require(path.resolve('./job_handlers',job['CLASS_NAME']+'.js'));
 				GLOBAL[job['CLASS_NAME']].perform(job.PARAMS,function(error,success){
 					if(success)
 						job.remove(function(err,job){});	

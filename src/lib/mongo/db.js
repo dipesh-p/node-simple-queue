@@ -1,17 +1,19 @@
-function MongoDB(){
-	var mongoose_obj = require('mongoose');	
-	mongoose_obj.set('debug', false);
-	
-	this.ConnectToDB=function(db_config){
+function MongoDB(db_config){
+	var mongoose = require('mongoose');	
+	mongoose.set('debug', false);
+	var mongoose_obj={};
+
+	function ConnectToDB(){
 		if(db_config==undefined){
-			mongoose_obj.connect('mongodb://127.0.0.1/node-queue');
+			mongoose_obj=mongoose.createConnection('mongodb://127.0.0.1/node-queue');
 		}else{
-			mongoose_obj.connect('mongodb://'+db_config.host+':'+db_config.port+'/'+db_config.db_name);
+			mongoose_obj=mongoose.createConnection('mongodb://'+db_config.host+':'+db_config.port+'/'+db_config.db_name);
 		}
 	}
+	ConnectToDB();
 
 	/* JOBS Schema */
-	var Schema = mongoose_obj.Schema
+	var Schema = mongoose.Schema
 	  , ObjectId = Schema.ObjectId;
 
 	var JobSchema = new Schema({

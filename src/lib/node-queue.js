@@ -1,11 +1,11 @@
 "use strict"
 var DB=require('./db.js').DB;
-var db=new DB('MongoDB');
+var db={};
 var path=require('path');
 
 function NodeQueue(db_config){
 	try{
-		db.ConnectToDB(db_config);
+		db =new DB('MongoDB',db_config);
 		this.enqueueJob=function(queue_name,job,params){
 			db.Job.enqueueJob(queue_name,job,params,function(err,res){
 			});
@@ -18,7 +18,7 @@ function NodeQueue(db_config){
 
 function NodeWorker(db_config){
 	try{
-		db.ConnectToDB(db_config);
+		db =new DB('MongoDB',db_config);
 		this.startWorkers=function(queue,no_of_workers){
 			// workers[queue]=[];
 			for (var i=0;i<no_of_workers;i++){
