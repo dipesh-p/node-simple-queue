@@ -1,6 +1,7 @@
 "use strict"
 var path=require('path');
-var db=require(path.resolve('.',__dirname+'/db.js'));
+var DB=require(path.resolve('.',__dirname+'/db.js')).DB;
+var db=new DB('MongoDB');
 var queue="";
 process.on('message',function(worker){
 	queue=worker.queue;
@@ -15,7 +16,7 @@ process.on('message',function(worker){
 });
 
 function checkForJob(){
-	Job.getNextJobsToDo(queue,process.pid,function(err,job){
+	db.Job.getNextJobsToDo(queue,process.pid,function(err,job){
 		if(job){
 			try{
 				require(path.resolve('.',job['CLASS_NAME']+'.js'));
