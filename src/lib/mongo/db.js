@@ -7,7 +7,7 @@ function MongoDB(db_config){
 		if(db_config==undefined){
 			mongoose_obj=mongoose.createConnection('mongodb://127.0.0.1/node-queue');
 		}else{
-			mongoose_obj=mongoose.createConnection('mongodb://'+db_config.host+':'+db_config.port+'/'+db_config.db_name);
+			mongoose_obj=mongoose.createConnection('mongodb://'+db_config.username+':'+db_config.password+'@'+db_config.host+':'+db_config.port+'/'+db_config.db_name);
 		}
 	}
 	ConnectToDB();

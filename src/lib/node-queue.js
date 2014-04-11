@@ -26,7 +26,7 @@ function NodeWorker(db_config){
 				// workers[queue].push(child);
 				db.Worker.addNewWorker(child.pid,'F');
 				child.on('exit', function(code) {
-					restartWorker(queue,child.pid);
+					restartWorker(queue,child.pid,db_config);
 				});
 				child.send({queue:queue,db_config:db_config});
 			}	
@@ -36,10 +36,10 @@ function NodeWorker(db_config){
 		throw(e);
 	}
 }
-function restartWorker(queue,pid){
+function restartWorker(queue,pid,db_config){
 	var new_child=require('child_process').fork(__dirname+'/worker_process.js');
 	new_child.on('exit',function(code){
-		restartWorker(queue,new_child.pid);
+		restartWorker(queue,new_child.pid,db_config);
 	});
 	new_child.send({queue:queue,db_config:db_config});
 	db.Worker.ReplaceWorker(pid,new_child.pid,function(err,res){
