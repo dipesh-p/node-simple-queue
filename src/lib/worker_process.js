@@ -19,6 +19,7 @@ function checkForJob(){
 	db.Job.getNextJobsToDo(queue,process.pid,function(err,job){
 		if(job){
 			try{
+				db.Worker.MarkBusy(process.pid);
 				require(path.resolve('./job_handlers',job['CLASS_NAME']+'.js'));
 				GLOBAL[job['CLASS_NAME']].perform(job.PARAMS,function(error,success){
 					if(success)
@@ -28,12 +29,14 @@ function checkForJob(){
 						job.ERROR=error;
 						job.save(function(err,status){});
 					}
+					db.Worker.MarkFree(process.pid);
 					setTimeout(checkForJob,2000);					
 				});	
 			}catch(e){
 				job.STATUS='E';
 				job.ERROR=e.toString();
 				job.save(function(err,status){});
+				db.Worker.MarkFree(process.pid);
 				setTimeout(checkForJob,2000);
 			}
 		}else{
