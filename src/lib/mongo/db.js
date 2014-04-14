@@ -95,6 +95,11 @@ function MongoDB(db_config){
 		Job.update({$and:[{HANDLE_BY:pid},{STATUS:'P'}]},{$set:{STATUS:'Q',HANDLE_BY:0}},function(err,res){});
 		Worker.update({PID:pid},{$set:{PID:new_pid,STATUS:'F'}},callback);
 	}
+	Worker.RemoveWorker=function(queue){
+		Worker.remove({QUEUE:queue},function(err,result){
+			
+		});
+	}
 	this.Worker=Worker;
 }
 exports.MongoDB=MongoDB;

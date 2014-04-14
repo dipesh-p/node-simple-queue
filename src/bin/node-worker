@@ -30,7 +30,10 @@ if(process.argv.length > 3) {
 		if(db_config_option!=''){
 			var ENVIRONMENT=process.env.NODE_ENV;	
 			if(ENVIRONMENT=="" || ENVIRONMENT==undefined) ENVIRONMENT="development";
-			var Config = require('config-js').Config;
+			var Config = require(path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules/config-js/index.js'));
+			if(!Config){
+				Config = require(path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules/config-js/index.js')).Config;
+			}
 			GLOBAL.CONFIG=new Config('./config/'+ENVIRONMENT+'.js');
 			db_config=CONFIG.get(db_config_option);
 		}

@@ -2,7 +2,7 @@
 var DB=require('./db.js').DB;
 var db={};
 var path=require('path');
-
+// var running = require('is-running');
 function NodeQueue(db_config){
 	try{
 		db =new DB('MongoDB',db_config);
@@ -21,11 +21,12 @@ function NodeWorker(db_config){
 		db =new DB('MongoDB',db_config);
 		this.startWorkers=function(queue,no_of_workers){
 			// workers[queue]=[];
+			db.Worker.RemoveWorker(queue);
 			for (var i=0;i<no_of_workers;i++){
 				var child=require('child_process').fork(__dirname+'/worker_process.js');
 				// workers[queue].push(child);
-				db.Worker.addNewWorker(child.pid,'F');
-				child.on('exit', function(code) {
+				db.Worker.addNewWorker(child.pid,'F',queue);
+				child.on('exit', function(code,signal) {
 					restartWorker(queue,child.pid,db_config);
 				});
 				child.send({queue:queue,db_config:db_config});
@@ -38,7 +39,7 @@ function NodeWorker(db_config){
 }
 function restartWorker(queue,pid,db_config){
 	var new_child=require('child_process').fork(__dirname+'/worker_process.js');
-	new_child.on('exit',function(code){
+	new_child.on('exit',function(code,signal){
 		restartWorker(queue,new_child.pid,db_config);
 	});
 	new_child.send({queue:queue,db_config:db_config});
