@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node-Simple-Queue</title>
+    <!-- <link href="assets/css/stylesheet.css" rel="stylesheet" type="text/css" /> -->
+    <!-- <link rel="stylesheet" href="/stylesheets/stylesheet.css"/> -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>   
+
+    
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+  
+
+  
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.min.js"></script>
+    
+    <script type="text/javascript">
+      var NgNodeQueue=angular.module('NgNodeQueue',['ngRoute']);
+      NgNodeQueue.config(['$routeProvider',function($routeProvider){
+       $routeProvider.when('/', {
+        templateUrl:'/jobs-overview.html',
+        controller:'JobOverviewController'
+       })
+       .when('/jobs/:queue_id/:status',{
+        templateUrl:'/jobs.html',
+         controller:'JobsController'
+       })
+       .when('/workers', {
+        templateUrl:'/workers.html',
+        controller:'WorkersController'
+       })       
+       .otherwise({redirectTo:'/'});
+      }]);
+
+      NgNodeQueue.run(['$rootScope',function($rootScope){
+        $rootScope.STATUS = {'E': 'Error', 'Q': 'In Queue', 'P': 'In Process', 'F': 'Free', 'B': 'Busy'}
+      }]);
+      NgNodeQueue.controller('JobsController', ['$scope', '$rootScope', '$http','$routeParams', function ($scope, $rootScope, $http,$routeParams) {
+        $scope.jobs = [];
+        $http.get('/node-simple-queue?page=jobs&queue_id='+$routeParams.queue_id+'&status='+$routeParams.status).success(function(data){
+          //data = JSON.parse(data);
+          $scope.jobs = data.data;
+
+        });
+      }]);
+
+      NgNodeQueue.controller('WorkersController', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http,$templateCache) {
+        $scope.workers = [];
+        $http.get('/node-simple-queue?page=workers').success(function(data){
+          //data = JSON.parse(data);
+          $scope.workers = data.data;
+
+        });
+      }]);
+
+      NgNodeQueue.controller('JobOverviewController', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http,$templateCache) {
+        $scope.data = [];
+       
+        function getJobs(){
+             $http.get('/node-simple-queue?page=first').success(function(data){
+            //data = JSON.parse(data);
+            var data = data.data;
+            console.log(data);
+            var queues = {};
+            for(var i=0;i<data.length;i++)
+            {
+              if(queues[data[i]['QUEUE']] == undefined){queues[data[i]['QUEUE']] = {}}
+
+              if(data[i].STATUS == 'E')
+                queues[data[i]['QUEUE']]['E'] = data[i].count;
+              else if(data[i].STATUS == 'Q')
+                queues[data[i]['QUEUE']]['Q'] = data[i].count;
+              else
+                queues[data[i]['QUEUE']]['P'] = data[i].count;
+            }
+            $scope.data = queues;
+          }).error(function(data, status){
+            console.log(data);
+          });
+        }
+
+        getJobs();
+        $scope.getJobs=getJobs;
+      }]);
+      
+    </script> 
+  </head>
+  <body ng-app='NgNodeQueue'>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Node Simple Queue</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#/">Home</a></li>
+            <li><a href="#/workers">Workers</a></li>
+            <!-- <li><a href="#/jobs">Jobs</a></li> -->
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div ng-view=""></div>
+
+     <!-- Overview Template --> 
+     <script id="/jobs-overview.html" type="text/ng-template">
+      <div class="container">
+        <h1>Queues</h1>
+        <p>The list below contains all the registered queues with the number of jobs currently in the queue. Select a queue from above to view all jobs currently on the queue by different status.</p>
+        <button type="button" ng-click="getJobs()" class='btn btn-success'><i class='glyphicon glyphicon-refresh'></i> Refresh</button><br/><br/>
+        <table class="table table-striped table-bordered table-condensed" style="width:500px;">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Error</th>
+              <th>Queue</th>
+              <th>Running</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(QUEUE,val) in data">
+              <td>{{QUEUE}}</td>
+              <td><a href="#/jobs/{{QUEUE}}/E">{{val.E || 0}}</a></td>
+              <td><a href="#/jobs/{{QUEUE}}/Q">{{val.Q || 0}}</a></td>
+              <td><a href="#/jobs/{{QUEUE}}/P">{{val.P || 0}}</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+     </script>
+
+     <!-- Workers Listing -->
+     <script id="/workers.html" type="text/ng-template">
+        <div class="container">
+        <h1>Workers</h1>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>STATUS</th>
+              <th>PID</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="test" ng-repeat="job in workers">
+              <td>{{STATUS[job.STATUS]}}</td>
+              <td>{{job.PID}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </script>
+
+     <!-- Jobs Listing -->
+     <script id="/jobs.html" type="text/ng-template">
+        <div class="container">
+        <h1>Jobs</h1>
+        <a href="#/jobs"><i class="glyphicon glyphicon-arrow-left"></i> Back to Overview</a><br/>
+        <table class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th>Job</th>
+              <th>Queue</th>
+              <th>Worker</th>
+              <th>Status</th>            
+              <th>created on</th>
+              <th>V</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="test" ng-repeat="job in jobs">
+              <td>{{job.CLASS_NAME}}</td>
+              <td>{{job.QUEUE}}</td>
+              <td>{{job.HANDLE_BY}}</td>
+              <td>{{STATUS[job.STATUS]}}</td>
+              <td>{{job.TIMESTAMP | date: 'MM/dd/yyyy H:m'}}</td>
+              <td>{{job.__v}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </script>
+
+  </body>
+</html>
