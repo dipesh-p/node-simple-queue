@@ -16,40 +16,16 @@ function NodeQueue(db_config){
 	}
 }
 
-function NodeWorker(db_config){
+function NodeQueueWeb(db_config){
 	try{
 		db =new DB('MongoDB',db_config);
-		this.startWorkers=function(queue,no_of_workers){
-			// workers[queue]=[];
-			db.Worker.RemoveWorker(queue);
-			for (var i=0;i<no_of_workers;i++){
-				var child=require('child_process').fork(__dirname+'/worker_process.js');
-				// workers[queue].push(child);
-				db.Worker.addNewWorker(child.pid,'F',queue);
-				child.on('exit', function(code,signal) {
-					restartWorker(queue,child.pid,db_config);
-				});
-				child.send({queue:queue,db_config:db_config});
-			}	
-		}
 	}catch(e){
 		this.error=e;
 		throw(e);
 	}
 }
-function restartWorker(queue,pid,db_config){
-	var new_child=require('child_process').fork(__dirname+'/worker_process.js');
-	new_child.on('exit',function(code,signal){
-		restartWorker(queue,new_child.pid,db_config);
-	});
-	new_child.send({queue:queue,db_config:db_config});
-	db.Worker.ReplaceWorker(pid,new_child.pid,function(err,res){
 
-	});
-}
-
-exports.NodeQueueWeb=function(req,res, db_config){
-	db = new DB('MongoDB');
+NodeQueueWeb.prototype.route=function(req,res){
 	var action = req.query.page;
 	switch(action){
 		case 'first':
@@ -65,9 +41,7 @@ exports.NodeQueueWeb=function(req,res, db_config){
 			render_html(req, res);
 			break;
 	}
-
-};
-
+}
 function render_html(req, res){
 	var fs = require('fs');
 	fs.readFile(__dirname + '/views/node_queue_web/node_queue.txt', 'utf8', function (err,data) {
@@ -76,8 +50,6 @@ function render_html(req, res){
 }
 
 function jobs_overview(req, res){
-	console.log("TEST DATA");
-	db = new DB('MongoDB');
 	var group = {
 	   key: {QUEUE:1, STATUS: 1},
 	   cond: {},
@@ -118,3 +90,4 @@ function workers_list(req, res){
 
 exports.NodeWorker=NodeWorker;
 exports.NodeQueue=NodeQueue;
+exports.NodeQueueWeb=NodeQueueWeb;

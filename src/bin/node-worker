@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 
 "use strict";
+GLOBAL.workers=[];
 if(process.argv.length > 3) {
 	var path = require('path');
 	var fs= require('fs');
 	var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../lib');
-	var NodeWorker=require(lib+'/node-queue.js').NodeWorker;
+	var NodeWorker=require(lib+'/node-worker.js').NodeWorker;
 
 	var workers=0;
 	var queue="";
 	var db_config_option='';
+	var action=process.argv[2];
+
 	for(var i=0;i<process.argv.length;i++){
 		var param=process.argv[i];
 		if(param.indexOf('QUEUE=')==0){
@@ -23,24 +26,49 @@ if(process.argv.length > 3) {
 	if(workers==0) workers=1;
 	if(queue==""){
 		console.log("ERROR: Invalid Parameter -- below is the use case");
-	 	console.log("node-worker QUEUE=queue1 WORKERS=2 DB_CONFIG=config_name");
+	 	console.log("node-worker start/stop QUEUE=queue1 WORKERS=2 DB_CONFIG=config_name");
 	 	console.log("DB_CONFIG is optional");
 	}else{
-		var db_config=undefined;
-		if(db_config_option!=''){
-			var ENVIRONMENT=process.env.NODE_ENV;	
-			if(ENVIRONMENT=="" || ENVIRONMENT==undefined) ENVIRONMENT="development";
-			var Config = require(path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules/config-js/index.js'));
-			if(!Config){
-				Config = require(path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules/config-js/index.js')).Config;
+		if(action=="start"){
+			var db_config=undefined;
+			if(db_config_option!=''){
+				var ENVIRONMENT=process.env.NODE_ENV;	
+				if(ENVIRONMENT=="" || ENVIRONMENT==undefined) ENVIRONMENT="development";
+				var Config = require(path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules/config-js/index.js'));
+				if(!Config){
+					Config = require(path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules/config-js/index.js')).Config;
+				}
+				GLOBAL.CONFIG=new Config('./config/'+ENVIRONMENT+'.js');
+				db_config=CONFIG.get(db_config_option);
 			}
-			GLOBAL.CONFIG=new Config('./config/'+ENVIRONMENT+'.js');
-			db_config=CONFIG.get(db_config_option);
+			var node_worker=new NodeWorker(db_config);
+			node_worker.startWorkers(queue,workers);
+			
+			fs.writeFileSync("/tmp/node-simple-queue-"+queue+".pid",process.pid);
+
+			process.on('SIGINT',on_exit);
+			process.on('SIGTERM',on_exit);
+			// process.on('exit',on_exit);
+		}else if(action=="stop"){
+			var exec=require('child_process').exec;
+			var pid=fs.readFileSync("/tmp/node-simple-queue-"+queue+".pid");
+			exec("kill "+pid,function(err,result){
+				process.exit(0);
+			});
+		}else{
+			console.log("ERROR: Invalid Parameter -- below is the use case");
+		 	console.log("node-worker start/stop QUEUE=queue1 WORKERS=2 DB_CONFIG=config_name");
+		 	console.log("DB_CONFIG is optional");		
 		}
-		var node_worker=new NodeWorker(db_config);
-		node_worker.startWorkers(queue,workers);
 	}
 }else{
-	 console.log("ERROR: Invalid Parameter -- below is the use case");
-	 console.log("node-worker QUEUE=queue1 WORKERS=2");
+	console.log("ERROR: Invalid Parameter -- below is the use case");
+ 	console.log("node-worker start/stop QUEUE=queue1 WORKERS=2 DB_CONFIG=config_name");
+ 	console.log("DB_CONFIG is optional");
+}
+function on_exit(){
+	for(var child in GLOBAL.workers){
+		GLOBAL.workers[child].send('terminate');
+	}
+	process.exit(0);
 }

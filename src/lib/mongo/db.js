@@ -100,6 +100,11 @@ function MongoDB(db_config){
 			
 		});
 	}
+	Worker.RemoveWorkerById=function(worker_id,callback){
+		Worker.remove({PID:worker_id},function(err,result){
+			callback(err,result);
+		});
+	}
 	this.Worker=Worker;
 }
 exports.MongoDB=MongoDB;
