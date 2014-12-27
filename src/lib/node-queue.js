@@ -6,8 +6,9 @@ var path=require('path');
 function NodeQueue(db_config){
 	try{
 		db =new DB('MongoDB',db_config);
-		this.enqueueJob=function(queue_name,job,params){
+		this.enqueueJob=function(queue_name,job,params,callback){
 			db.Job.enqueueJob(queue_name,job,params,function(err,res){
+				if(callback) callback(err,res);
 			});
 		}
 	}catch(e){
@@ -37,6 +38,12 @@ NodeQueueWeb.prototype.route=function(req,res){
 		case 'workers':
 			workers_list(req, res);
 			break;
+		case 'retryJob':
+			retry_job(req,res);
+			break;
+		case 'removeJob':
+			remove_job(req,res);
+			break;	
 		default:
 			render_html(req, res);
 			break;
@@ -48,6 +55,18 @@ function render_html(req, res){
 		res.send(data);
 	});
 }
+
+function retry_job(req,res){
+	db.Job.retry(req.query.job_id,function(err,resp){
+		res.send({status:'success'});
+	});
+}
+function remove_job(req,res){
+	db.Job.removeJob(req.query.job_id,function(err,resp){
+		res.send({status:'success'});
+	});
+}
+
 
 function jobs_overview(req, res){
 	var group = {
@@ -71,12 +90,11 @@ function jobs_list(req, res){
 	var status = req.query.status;
 
 	db.Job.find({QUEUE: queue_id, STATUS: status}, function(err, jobs){
-		console.log(jobs);
 		if(err)
 			res.send({status: 'failure'});
 		else
 			res.send({status: 'success', data: jobs});
-	})
+	});
 }
 
 function workers_list(req, res){
@@ -88,6 +106,5 @@ function workers_list(req, res){
 	})
 }
 
-exports.NodeWorker=NodeWorker;
 exports.NodeQueue=NodeQueue;
 exports.NodeQueueWeb=NodeQueueWeb;

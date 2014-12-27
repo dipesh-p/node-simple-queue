@@ -50,7 +50,15 @@ Now we can start up a worker to grab some work off of the queue and do the work:
 
 ```node
 $> cd <to-your-project>
-$> node_modules/node-simple-queue/bin/node-worker QUEUE=Queue1 WORKERS=4
+$> node_modules/node-simple-queue/bin/node-worker start QUEUE=Queue1 WORKERS=4
 ```
+
+To Stop the worker
+
+```node
+$> cd <to-your-project>
+$> node_modules/node-simple-queue/bin/node-worker stop QUEUE=Queue1
+```
+
 
 That's all you have to do for starting the Workers to work on 'Queue1' with 4 workers

@@ -14,9 +14,9 @@ function NodeWorker(db_config){
 				workers[i]=child;
 				db.Worker.addNewWorker(child.pid,'F',queue);
 				child.on('exit', function(code,signal) {
-					console.log(code);
-					console.log("Child Exit");
-					console.log(signal);
+					// console.log(code);
+					// console.log("Child Exit");
+					// console.log(signal);
 					if(code!=0){
 						console.log("Child Exit");
 						var sub_child=restartWorker(queue,child.pid,db_config,i);

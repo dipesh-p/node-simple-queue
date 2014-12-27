@@ -55,6 +55,25 @@ function MongoDB(db_config){
 				callback(null,false);
 		});
 	}
+
+	Job.retry=function(job_id,callback){
+		var ObjectId = mongoose.Types.ObjectId(job_id);
+		Job.update({
+		    "_id": ObjectId
+		},{$set:{STATUS:'Q'}},function(err,resp){
+			callback(err,resp);
+		});
+	}
+	Job.removeJob=function(job_id,callback){
+		var ObjectId = mongoose.Types.ObjectId(job_id);
+		Job.remove({
+		    "_id": ObjectId
+		},function(err,resp){
+			callback(err,resp);
+		});
+	}
+
+
 	this.Job=Job;
 
 

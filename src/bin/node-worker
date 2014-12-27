@@ -7,6 +7,7 @@ if(process.argv.length > 3) {
 	var fs= require('fs');
 	var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../lib');
 	var NodeWorker=require(lib+'/node-worker.js').NodeWorker;
+	var PID_PATH='./.node-queue-pids';
 
 	var workers=0;
 	var queue="";
@@ -21,6 +22,8 @@ if(process.argv.length > 3) {
 			workers=parseInt(param.replace('WORKERS=',''));
 		}else if(param.indexOf('DB_CONFIG=')==0){
 			db_config_option=param.replace("DB_CONFIG=","");
+		}else if (param.indexOf('PID=')==0){
+			PID_PATH=param.replace("PID=","");
 		}
 	}
 	if(workers==0) workers=1;
@@ -29,14 +32,16 @@ if(process.argv.length > 3) {
 	 	console.log("node-worker start/stop QUEUE=queue1 WORKERS=2 DB_CONFIG=config_name");
 	 	console.log("DB_CONFIG is optional");
 	}else{
+		var ENVIRONMENT=process.env.NODE_ENV;	
+		if(ENVIRONMENT=="" || ENVIRONMENT==undefined) ENVIRONMENT="development";
+			
 		if(action=="start"){
 			var db_config=undefined;
+				
 			if(db_config_option!=''){
-				var ENVIRONMENT=process.env.NODE_ENV;	
-				if(ENVIRONMENT=="" || ENVIRONMENT==undefined) ENVIRONMENT="development";
-				var Config = require(path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules/config-js/index.js'));
+				var Config = require('config-js');
 				if(!Config){
-					Config = require(path.join(path.dirname(fs.realpathSync(__filename)), '../node_modules/config-js/index.js')).Config;
+					Config = require('config-js').Config;
 				}
 				GLOBAL.CONFIG=new Config('./config/'+ENVIRONMENT+'.js');
 				db_config=CONFIG.get(db_config_option);
@@ -44,17 +49,22 @@ if(process.argv.length > 3) {
 			var node_worker=new NodeWorker(db_config);
 			node_worker.startWorkers(queue,workers);
 			
-			fs.writeFileSync("/tmp/node-simple-queue-"+queue+".pid",process.pid);
+			if(!fs.existsSync(PID_PATH)){
+				fs.mkdirSync(PID_PATH);
+			}
+			fs.writeFileSync(PID_PATH+"/node-simple-queue-"+ENVIRONMENT.replace(/\//g,"-")+"-"+queue+".pid",process.pid);
 
 			process.on('SIGINT',on_exit);
 			process.on('SIGTERM',on_exit);
 			// process.on('exit',on_exit);
 		}else if(action=="stop"){
 			var exec=require('child_process').exec;
-			var pid=fs.readFileSync("/tmp/node-simple-queue-"+queue+".pid");
-			exec("kill "+pid,function(err,result){
-				process.exit(0);
-			});
+			var pid=fs.readFileSync(PID_PATH+"/node-simple-queue-"+ENVIRONMENT.replace(/\//g,"-")+"-"+queue+".pid");
+			if(pid!="")
+				exec("kill "+pid,function(err,result){
+					fs.writeFileSync(PID_PATH+"/node-simple-queue-"+ENVIRONMENT.replace(/\//g,"-")+"-"+queue+".pid","");
+					process.exit(0);
+				});
 		}else{
 			console.log("ERROR: Invalid Parameter -- below is the use case");
 		 	console.log("node-worker start/stop QUEUE=queue1 WORKERS=2 DB_CONFIG=config_name");
