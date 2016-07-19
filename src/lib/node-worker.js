@@ -5,7 +5,7 @@ var path=require('path');
 function NodeWorker(db_config){
 	try{
 		db =new DB('MongoDB',db_config);
-		this.startWorkers=function(queue,no_of_workers){
+		this.startWorkers=function(queue,no_of_workers,JOB_TIMEOUT){
 			// workers[queue]=[];
 			db.Worker.RemoveWorker(queue);
 			for (var i=0;i<no_of_workers;i++){
@@ -19,14 +19,14 @@ function NodeWorker(db_config){
 					// console.log(signal);
 					if(code!=0){
 						console.log("Child Exit");
-						var sub_child=restartWorker(queue,child.pid,db_config,i);
+						var sub_child=restartWorker(queue,child.pid,db_config,i,JOB_TIMEOUT);
 						workers[i]=sub_child;
 					}
 				});
 				child.on('error',function(){});
 				child.on('close',function(){});
 
-				child.send({queue:queue,db_config:db_config});
+				child.send({queue:queue,db_config:db_config,JOB_TIMEOUT:JOB_TIMEOUT});
 			}	
 		}
 	}catch(e){
@@ -34,12 +34,12 @@ function NodeWorker(db_config){
 		throw(e);
 	}
 }
-function restartWorker(queue,pid,db_config,num){
+function restartWorker(queue,pid,db_config,num,JOB_TIMEOUT){
 	var new_child=require('child_process').fork(__dirname+'/worker_process.js');
 	new_child.on('exit',function(code,signal){
-		workers[num]=restartWorker(queue,new_child.pid,db_config,num);
+		workers[num]=restartWorker(queue,new_child.pid,db_config,num,JOB_TIMEOUT);
 	});
-	new_child.send({queue:queue,db_config:db_config});
+	new_child.send({queue:queue,db_config:db_config,JOB_TIMEOUT:JOB_TIMEOUT});
 	db.Worker.ReplaceWorker(pid,new_child.pid,function(err,res){
 
 	});

@@ -8,7 +8,7 @@ if(process.argv.length > 3) {
 	var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../lib');
 	var NodeWorker=require(lib+'/node-worker.js').NodeWorker;
 	var PID_PATH='./.node-queue-pids';
-
+    var JOB_TIMEOUT=60000;
 	var workers=0;
 	var queue="";
 	var db_config_option='';
@@ -24,6 +24,12 @@ if(process.argv.length > 3) {
 			db_config_option=param.replace("DB_CONFIG=","");
 		}else if (param.indexOf('PID=')==0){
 			PID_PATH=param.replace("PID=","");
+		}else if (param.indexOf('JOB_TIMEOUT=')==0){
+		    JOB_TIMEOUT=parseInt(param.replace("JOB_TIMEOUT=","").trim());
+		    if(isNaN(JOB_TIMEOUT)){
+		        console.log("ERROR: Invalid Parameter JOB_TIMEOUT, it should be number only");
+		        process.exit(0);
+		    }
 		}
 	}
 	if(workers==0) workers=1;
@@ -47,7 +53,7 @@ if(process.argv.length > 3) {
 				db_config=CONFIG.get(db_config_option);
 			}
 			var node_worker=new NodeWorker(db_config);
-			node_worker.startWorkers(queue,workers);
+			node_worker.startWorkers(queue,workers,JOB_TIMEOUT);
 			
 			if(!fs.existsSync(PID_PATH)){
 				fs.mkdirSync(PID_PATH);

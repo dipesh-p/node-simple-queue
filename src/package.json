@@ -2,7 +2,7 @@
   "author": "Dipesh Patel",
   "name": "node-simple-queue",
   "description": "A simple queue for NodeJS, with usage similar to Resque in RoR",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "private": false,
   "repository": {
     "type": "git",
