@@ -1,6 +1,4 @@
-/**
- * Created by paresh on 17/10/16.
- */
+#!/usr/bin/env node
 
 var fs = require('fs');
 var async = require('async');
