@@ -1,0 +1,237 @@
+/**
+ * Created by paresh on 17/10/16.
+ */
+
+var fs = require('fs');
+var async = require('async');
+var DB = require('../lib/db.js').DB;
+var pm2 = require('pm2');
+var q = require('q');
+
+var JOB_TIMEOUT = 60000;
+var queue = "";
+var db = {};
+var db_config = undefined, db_config_option, priority;
+
+// priorityQueue Array used to store queue priority (E.g ["Queue2:10","Queue1:5"])
+GLOBAL.priorityQueue = [];
+
+// priorityQueue Array used to store queue priority names (E.g ["Queue2","Queue1"])
+GLOBAL.priorityQueueNames = [];
+
+/**
+ * @desc Starting point of node simple queue
+ */
+var start = function () {
+    console.log('**********************************Start************************************************')
+    console.log('Process Id : ' + process.pid);
+    fs.appendFile('./SIGINTCalled.txt', '\nStarted  Process ID  : ' + process.pid + ' on ' + new Date(), function () {
+        console.log('Start status written in file');
+    });
+    // To parse arguments
+    parseArguments().then(function () {
+        // Create Worker
+        createWorker().then(function () {
+            // Start worker to process queue
+            startWorkerThread();
+        })
+    }).fail(function (err) {
+        // Error occur while parsing argument
+        pm2.connect(function (err) {
+            // If Error then kill the process
+            if (err) {
+                process.exit(2);
+            }
+            // Kill the started process : Fetch list of the process started by pm2 from pm2 Api and kill them
+            pm2.killDaemon(function (err, result) {
+                // Disconnect pm2 after killing process because pm2 will not kill pid or process
+                // By Disconnecting it will explicitly kill the process
+                pm2.disconnect();
+            });
+        });
+    });
+}();
+
+
+/**
+ * @desc Set interval before stopping or deleting the worker
+ */
+setInterval(function () {
+    // even empty we do not care
+}, 1000);
+
+/**
+ * @desc SIGINT will call when pm2 stop or delete is called, Remove worker from db
+ */
+process.on('SIGINT', function () {
+    db.Worker.RemoveWorkerByPID(process.pid, function () {
+        fs.appendFile('./SIGINTCalled.txt', '\nStopped Process ID  : ' + process.pid + ' on ' + new Date(), function () {
+            console.log('Stop status written in file');
+        });
+    });
+});
+/**
+ * @desc SIGTERM will call when pm2 stop or delete is called, Remove worker from db
+ */
+process.on('SIGTERM', function () {
+    fs.appendFile('./SIGINTCalled.txt', '\nTerminated Process ID  : ' + process.pid + ' on ' + new Date(), function () {
+        console.log('Terminate status written in file');
+    });
+});
+
+
+/**
+ * @desc To Parse arguments passed before starting queue service
+ * @returns {*|promise}
+ */
+function parseArguments() {
+    var deferred = q.defer();
+    // Parse each argument
+    async.forEachLimit(process.argv, 1, function (argv, callback) {
+        var param = argv;
+        if (param.indexOf('QUEUE=') == 0) {
+            queue = param.replace("QUEUE=", "");
+
+            // To check priority has assign to queue or not
+            if (queue.indexOf(":") != -1) {
+                var queueList = queue.split(",");
+
+                // Checked for all queue has assigned priority (E.g Queue2:10,Queue1:5)
+                if ((queue.split(":").length - 1) == queueList.length) {
+                    console.log('All queue has assigned priority');
+                    // Create priority queue
+                    createPriorityQueue(queue).then(function () {
+
+                    });
+                } else {
+                    // Assign 0 priority to remaining queue (E.g Queue1,Queue2:50,Queue3 => Queue1:0,Queue2:50,Queue3:0 )
+                    console.log('Set default priority to remaining queue');
+                    var parsedQueueList = queueList.map(function (i) {
+                        if (i.split(':').length != 2) {
+                            i = i + ':0';
+                        }
+                        return i;
+                    }).toString();
+                    console.log('Modified queue : ' + parsedQueueList);
+                    // Create priority queue
+                    createPriorityQueue(parsedQueueList).then(function () {
+
+                    });
+                }
+            } else {
+                console.log('Priority is not assigned to any queue. Use FIFO mechanism');
+                queue = param.replace("QUEUE=", "");
+            }
+        } else if (param.indexOf('DB_CONFIG=') == 0) {
+            db_config_option = param.replace("DB_CONFIG=", "");
+        } else if (param.indexOf('JOB_TIMEOUT=') == 0) {
+            JOB_TIMEOUT = parseInt(param.replace("JOB_TIMEOUT=", "").trim());
+            if (isNaN(JOB_TIMEOUT)) {
+                console.log("ERROR: Invalid Parameter JOB_TIMEOUT, it should be number only");
+                deferred.reject(false);
+            }
+        }
+        // Async callback to process each argument
+        callback();
+    }, function (err) {
+
+        // After parsing arguments
+        if (queue == "") {
+            console.log("ERROR: Invalid Parameter -- below is the use case");
+            console.log("node-worker start/stop QUEUE=queue1 DB_CONFIG=config_name");
+            console.log("DB_CONFIG is optional");
+            deferred.reject('Invalid Argument');
+        } else {
+
+            var ENVIRONMENT = process.env.NODE_ENV;
+            if (ENVIRONMENT == "" || ENVIRONMENT == undefined) ENVIRONMENT = "development";
+
+            console.log('ENVIRONMENT : ' + ENVIRONMENT);
+
+            if (db_config_option != '') {
+                var Config = require('config-js');
+                if (!Config) {
+                    Config = require('config-js').Config;
+                }
+                console.log(__dirname + '/config/' + ENVIRONMENT + '.js');
+                GLOBAL.CONFIG = new Config('/home/paresh/node_simple_queue/node-simple-queue/node_modules/node-simple-queue/config/development.js');
+                db_config = CONFIG.get(db_config_option);
+            }
+
+            console.log('Queue : ' + queue);
+            console.log('Only Queue List  : ' + queue.split(",").toString())
+            console.log('priorityQueue : ' + priorityQueue);
+            console.log('JOB_TIMEOUT : ' + JOB_TIMEOUT);
+            console.log('db_config_option : ' + db_config_option);
+            deferred.resolve(true);
+        }
+    });
+    return deferred.promise;
+};
+
+/**
+ * @desc Create worker and save in DB
+ * @returns {*|promise}
+ */
+function createWorker() {
+    var deferred = q.defer();
+    db = new DB('MongoDB', db_config);
+
+    // Create worker and save in db
+    db.Worker.addNewWorker(process.pid, 'F', queue);
+    console.log('Worker created');
+    deferred.resolve(true);
+    return deferred.promise;
+}
+
+/**
+ * @desc Start worker to process queue
+ */
+function startWorkerThread() {
+    try {
+
+        // Create queue process object
+        var worker = {queue: queue, db_config: db_config, JOB_TIMEOUT: JOB_TIMEOUT};
+
+        // Start worker thread in background
+        require('../lib/worker_process.js').WorkerProcess(worker);
+
+    } catch (e) {
+        console.log('Error in startworker :  ' + e);
+        process.exit(200);
+    }
+}
+
+/**
+ * @desc : Pass queue list, create priority queue and array of queue names
+ * @param queueList : List of Queue
+ * @returns {*|promise}
+ */
+function createPriorityQueue(queueList) {
+    var deferred = q.defer();
+    // Sort queue array based on priority (E.g : priorityQueue =["Queue1:153","Queue3:67","Queue2:0"])
+    priorityQueue = sortQueue(queueList.split(','));
+
+    // Create priority queue name array (E.g : priorityQueueNames = ["Queue1","Queue3","Queue2"])
+    priorityQueueNames = priorityQueue.toString().split(',').map(function (i) {
+        return i.split(':')[0];
+    });
+    queue = priorityQueueNames.toString();
+    console.log('queueNames : ' + priorityQueueNames);
+    deferred.resolve(true);
+    return deferred.promise;
+}
+
+
+/**
+ * @desc Sort queue based on priority
+ * @param queueArray : Contain list of queue
+ * @returns {*}
+ */
+function sortQueue(queueArray) {
+    return queueArray.sort(function (i, j) {
+        return j.split(':')[1] - i.split(':')[1];
+    });
+}
+
+
