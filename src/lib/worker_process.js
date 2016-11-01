@@ -74,8 +74,8 @@ function checkForJob() {
     db.Job.getNextJobsToDo(queue, process.pid, function (err, job) {
         // If new jobs found then process else wait for the job
         if (job) {
-            console.log('Found New Job : ' + JSON.stringify(job));
-            console.log('Queue : ' + queue);
+            //
+            // console.log('Queue : ' + queue);
             try {
                 db.Worker.MarkBusy(process.pid, function (err, resp) {
                 });
@@ -91,7 +91,7 @@ function checkForJob() {
                         });
                     });
                 }, JOB_TIMEOUT);
-                console.log('Job Executed by worker : ' + process.pid)
+                // console.log('Job Executed by worker : ' + process.pid)
 
                 //Execute perform method of custom class
                 GLOBAL[job['CLASS_NAME']].perform(job.PARAMS, function (error, success) {

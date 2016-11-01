@@ -12,6 +12,7 @@ if(process.argv.length > 3) {
 	var workers=0;
 	var queue="";
 	var db_config_option='';
+	console.log(process.argv);
 	var action=process.argv[2];
 
 	for(var i=0;i<process.argv.length;i++){

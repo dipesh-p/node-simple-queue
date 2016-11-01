@@ -147,13 +147,10 @@ function parseArguments() {
             console.log('ENVIRONMENT : ' + ENVIRONMENT);
 
             if (db_config_option != '') {
-                var Config = require('config-js');
-                if (!Config) {
-                    Config = require('config-js').Config;
-                }
-                console.log(__dirname + '/config/' + ENVIRONMENT + '.js');
-                GLOBAL.CONFIG = new Config('/home/paresh/node_simple_queue/node-simple-queue/node_modules/node-simple-queue/config/development.js');
-                db_config = CONFIG.get(db_config_option);
+                var path=require('path');
+                var configPath=path.join(process.cwd(),'config',ENVIRONMENT+'.js');
+                GLOBAL.CONFIG = require(configPath);
+                db_config = CONFIG[db_config_option];
             }
 
             console.log('Queue : ' + queue);

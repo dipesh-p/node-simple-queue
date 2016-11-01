@@ -50,7 +50,7 @@ function MongoDB(db_config) {
 
 
     Job.getNextJobsToDo = function (queue, pid, jobcallback) {
-        console.log('priorityQueueNames  : ' + priorityQueueNames);
+        // console.log('priorityQueueNames  : ' + priorityQueueNames);
 
         // If priority is not set then process queue in FIFO mechanism
         if (!priorityQueueNames.length) {
@@ -105,7 +105,7 @@ function MongoDB(db_config) {
         }
 
 
-        console.log('Processing Queue ........Condition : ' + JSON.stringify(condition));
+        // console.log('Processing Queue ........Condition : ' + JSON.stringify(condition));
         Job.findOneAndUpdate(condition, {
             $set: {
                 STATUS: 'P',
