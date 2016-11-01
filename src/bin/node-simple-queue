@@ -21,11 +21,11 @@ GLOBAL.priorityQueueNames = [];
  * @desc Starting point of node simple queue
  */
 var start = function () {
-    console.log('**********************************Start************************************************')
-    console.log('Process Id : ' + process.pid);
-    fs.appendFile('./SIGINTCalled.txt', '\nStarted  Process ID  : ' + process.pid + ' on ' + new Date(), function () {
-        console.log('Start status written in file');
-    });
+    // console.log('**********************************Start************************************************')
+    // console.log('Process Id : ' + process.pid);
+    // fs.appendFile('./SIGINTCalled.txt', '\nStarted  Process ID  : ' + process.pid + ' on ' + new Date(), function () {
+    //     console.log('Start status written in file');
+    // });
     // To parse arguments
     parseArguments().then(function () {
         // Create Worker
@@ -63,18 +63,22 @@ setInterval(function () {
  */
 process.on('SIGINT', function () {
     db.Worker.RemoveWorkerByPID(process.pid, function () {
-        fs.appendFile('./SIGINTCalled.txt', '\nStopped Process ID  : ' + process.pid + ' on ' + new Date(), function () {
-            console.log('Stop status written in file');
-        });
+        // fs.appendFile('./SIGINTCalled.txt', '\nStopped Process ID  : ' + process.pid + ' on ' + new Date(), function () {
+        //     console.log('Stop status written in file');
+        // });
     });
+	process.exit();
 });
 /**
  * @desc SIGTERM will call when pm2 stop or delete is called, Remove worker from db
  */
 process.on('SIGTERM', function () {
-    fs.appendFile('./SIGINTCalled.txt', '\nTerminated Process ID  : ' + process.pid + ' on ' + new Date(), function () {
-        console.log('Terminate status written in file');
+    db.Worker.RemoveWorkerByPID(process.pid, function () {
+        // fs.appendFile('./SIGINTCalled.txt', '\nTerminated Process ID  : ' + process.pid + ' on ' + new Date(), function () {
+        //     console.log('Terminate status written in file');
+        // });
     });
+	process.exit();
 });
 
 
@@ -212,7 +216,7 @@ function createPriorityQueue(queueList) {
         return i.split(':')[0];
     });
     queue = priorityQueueNames.toString();
-    console.log('queueNames : ' + priorityQueueNames);
+    // console.log('queueNames : ' + priorityQueueNames);
     deferred.resolve(true);
     return deferred.promise;
 }

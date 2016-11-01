@@ -42,7 +42,7 @@ function MongoDB(db_config) {
         job_obj.STATUS = 'Q';
         job_obj.HANDLE_BY = 0;
         job_obj.TIMESTAMP = (new Date().getTime());
-        console.log('Job etails : ' + JSON.stringify(job_obj));
+        // console.log('Job etails : ' + JSON.stringify(job_obj));
         job_obj.save(function (err, res) {
             callback(err, res);
         });
