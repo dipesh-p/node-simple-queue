@@ -12,10 +12,10 @@ var db = {};
 var db_config = undefined, db_config_option, priority;
 
 // priorityQueue Array used to store queue priority (E.g ["Queue2:10","Queue1:5"])
-GLOBAL.priorityQueue = [];
+global.priorityQueue = [];
 
 // priorityQueue Array used to store queue priority names (E.g ["Queue2","Queue1"])
-GLOBAL.priorityQueueNames = [];
+global.priorityQueueNames = [];
 
 /**
  * @desc Starting point of node simple queue
@@ -152,8 +152,9 @@ function parseArguments() {
 
             if (db_config_option != '') {
                 var path=require('path');
-                var configPath=path.join(process.cwd(),'config',ENVIRONMENT+'.js');
-                GLOBAL.CONFIG = require(configPath);
+                //var configPath=path.join(process.cwd(),'config',ENVIRONMENT+'.js');
+		var configPath=path.join(process.cwd(),'config/environments',ENVIRONMENT+'.json');
+                global.CONFIG = require(configPath);
                 db_config = CONFIG[db_config_option];
             }
 
