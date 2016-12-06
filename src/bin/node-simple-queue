@@ -152,8 +152,7 @@ function parseArguments() {
 
             if (db_config_option != '') {
                 var path=require('path');
-                //var configPath=path.join(process.cwd(),'config',ENVIRONMENT+'.js');
-		var configPath=path.join(process.cwd(),'config/environments',ENVIRONMENT+'.json');
+                var configPath=path.join(process.cwd(),'config',ENVIRONMENT+'.js');
                 global.CONFIG = require(configPath);
                 db_config = CONFIG[db_config_option];
             }
