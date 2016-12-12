@@ -102,9 +102,7 @@ JOB_TIMEOUT - It is the time after which if job is running then, it will stop th
 ```pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1:153,Queue2:5,Queue3:67 DB_CONFIG=db_config JOB_TIMEOUT=120000```
 
 - Description:
-	- node-simple-queue process
-
- job based on queue priority.
+	- node-simple-queue process job based on queue priority.
 
 
 * **To Start worker with priority of some queue :** 
