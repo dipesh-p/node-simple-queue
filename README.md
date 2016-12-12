@@ -5,18 +5,31 @@ A simple queue for NodeJS, with usage similar to Resque in RoR
 
 ### Install pm2 globally
 ```node
-$> npm install pm2 -g
+ npm install pm2 -g
 ```
 
 ### Installing module in Node Applicaiton
 
 ```node
-$> npm install node-simple-queue
+ npm install node-simple-queue
 ```
 
 ### Introduction
 
 Application sometimes require to do some job later. Node Simple Queue is a really simple way to manage a job that application needs to do in background.
+
+### Folder Structure from parent directory
+
+```
+├─ config/
+│   ├── environments
+│   │   ├── development.js
+│   │   ├── dev.js
+│   │   ├── production.js
+│   │   ├── staging.js
+│   ├── job_handlers
+│   │   ├── TestClass.js
+```
 
 To define some job you want to perform later, you need to define the job, job is a simple Javascript class that has `perform` method:
 
@@ -67,27 +80,19 @@ JOB_TIMEOUT - It is the time after which if job is running then, it will stop th
 
 ```NODE_ENV=environments/development pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1,Queue2,Queue3 DB_CONFIG=db_config JOB_TIMEOUT=120000```
 
-NODE_ENV=environments/development pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -n FCMQueue -- -a QUEUE=FCMQueue DB_CONFIG=queue_db_config JOB_TIMEOUT=120000
-
-
-config
-|______	environments
-		+-- development.js
-		+-- dev.js
-		+-- production.js
-		+-- staging.js
-```
-├─ config/
-│   ├── index.md
-│   ├── environments
-│   │   ├── 00_development.js
-│   │   ├── 01_dev.js
-│   │   ├── 02_production.js
-│   │   ├── 03_staging.js
-```
-
 - Description: 
-	- Create development.js file inside config/environments folder. In that file create key name of 
+	- Create development.js file inside config/environments folder. 
+		```node 
+		module.exports = {
+		    "db_config": {
+		        "username": "",
+        		"name": "",
+		        "host": "127.0.0.1",
+		        "port": "27017",
+		        "db_name": "node-queue"
+		    }
+		}
+		```
 	- It will create 2 instance of node-simple-queue for Queue1,Queue2,Queue3,DB_CONFIG,JOB_TIMEOUT passed as arguments
 	- -i 2 : Start 2 instances of application in cluster mode
 
