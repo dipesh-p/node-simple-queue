@@ -123,24 +123,25 @@ JOB_TIMEOUT - It is the time after which if job is running then, it will stop th
 
 * **To stop worker :** 
 
-Syantax : ```pm2 stop [worker id]```
-Command : ```pm2 stop 5```
+	- Syantax : ```pm2 stop [worker id]```
+	- Command : ```pm2 stop 5```
 
 
 * **To restart worker :** 
 
-- Syantax : ```pm2 restart [worker id]```
-- Command : ```pm2 restart 5```
+	- Syantax : ```pm2 restart [worker id]```
+	- Command : ```pm2 restart 5```
 
 
 * **To scale(increase) worker :** 
 
-- Syantax : ```pm2 scale [appname] No. of worker```
-- Command : ```pm2 scale myAppp 10```
-- Description : It will create 10 worker of myApp
+	- Syantax : ```pm2 scale [appname] No. of worker```
+	- Command : ```pm2 scale myAppp 10```
+	- Description : It will create 10 worker of myApp
 
-- Command : ```pm2 scale myAppp +3```
-- Description : It will add 3 worker of myApp 
+
+	- Command : ```pm2 scale myAppp +3```
+	- Description : It will add 3 worker of myApp 
 
 * **To delete all worker :** 
 
