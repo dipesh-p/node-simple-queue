@@ -129,33 +129,32 @@ Command : ```pm2 stop 5```
 
 * **To restart worker :** 
 
-Syantax : ```pm2 restart [worker id]```
-Command : ```pm2 restart 5```
+- Syantax : ```pm2 restart [worker id]```
+- Command : ```pm2 restart 5```
 
 
 * **To scale(increase) worker :** 
 
-Syantax : ```pm2 scale [appname] No. of worker```
-Command : ```pm2 scale myAppp 10```
+- Syantax : ```pm2 scale [appname] No. of worker```
+- Command : ```pm2 scale myAppp 10```
+- Description : It will create 10 worker of myApp
 
-Description : It will create 10 worker of myApp
-
-Command : ```pm2 scale myAppp +3```
-Description : It will add 3 worker of myApp 
+- Command : ```pm2 scale myAppp +3```
+- Description : It will add 3 worker of myApp 
 
 * **To delete all worker :** 
 
-Syantax : ```pm2 delete [worker id]```
-Command : ```pm2 delete 5```
-Description : It will delete worker of id 5
+- Syantax : ```pm2 delete [worker id]```
+- Command : ```pm2 delete 5```
+- Description : It will delete worker of id 5
 
-Command : ```pm2 delete all```
-Description : It will delete alll worker
+- Command : ```pm2 delete all```
+- Description : It will delete alll worker
 
 * **For Pm2 help :** 
 
-Command : ```pm2 -h```
-Description : It will show all the command and option list of pm2
+- Command : ```pm2 -h```
+- Description : It will show all the command and option list of pm2
 
 
 That's all you have to do for starting the Workers
