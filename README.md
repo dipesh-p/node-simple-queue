@@ -67,7 +67,7 @@ Now we can start up a worker to grab some work off of the queue and do the work:
 
 ```node
 $> cd <to-your-project>
-$> pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1,Queue2,Queue3 [options]
+$> NODE_ENV=environments/development pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1,Queue2,Queue3 [options]
 
 ```
 **Options available are as follows:**
@@ -82,7 +82,7 @@ JOB_TIMEOUT - It is the time after which if job is running then, it will stop th
 
 - Description: 
 	- Create development.js file inside config/environments folder. 
-		```node 
+```node
 		module.exports = {
 		    "db_config": {
 		        "username": "",
@@ -92,7 +92,7 @@ JOB_TIMEOUT - It is the time after which if job is running then, it will stop th
 		        "db_name": "node-queue"
 		    }
 		}
-		```
+```
 	- It will create 2 instance of node-simple-queue for Queue1,Queue2,Queue3,DB_CONFIG,JOB_TIMEOUT passed as arguments
 	- -i 2 : Start 2 instances of application in cluster mode
 
