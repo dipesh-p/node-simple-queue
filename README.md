@@ -65,9 +65,20 @@ JOB_TIMEOUT - It is the time after which if job is running then, it will stop th
 
 * **To Start worker without priority :** 
 
-```pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1,Queue2,Queue3 DB_CONFIG=db_config JOB_TIMEOUT=120000```
+```NODE_ENV=environments/development pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1,Queue2,Queue3 DB_CONFIG=db_config JOB_TIMEOUT=120000```
+
+NODE_ENV=environments/development pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -n FCMQueue -- -a QUEUE=FCMQueue DB_CONFIG=queue_db_config JOB_TIMEOUT=120000
+
+.
++-- config
+|	+-- environments
+		|	+-- development.js
+		|	+-- deve.js
+		|	+-- production.js
+		|	+-- staging.js
 
 - Description: 
+	- Create development.js file inside config/environments folder. In that file create key name of 
 	- It will create 2 instance of node-simple-queue for Queue1,Queue2,Queue3,DB_CONFIG,JOB_TIMEOUT passed as arguments
 	- -i 2 : Start 2 instances of application in cluster mode
 
@@ -77,8 +88,60 @@ JOB_TIMEOUT - It is the time after which if job is running then, it will stop th
 ```pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1:153,Queue2:5,Queue3:67 DB_CONFIG=db_config JOB_TIMEOUT=120000```
 
 - Description:
-	- node-simple-queue process job based on queue priority.
+	- node-simple-queue process
+
+ job based on queue priority.
 
 
+* **To Start worker with priority of some queue :** 
 
-That's all you have to do for starting the Workers to work on 'Queue1' with 4 workers
+```pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1,Queue2:10,Queue3 DB_CONFIG=db_config JOB_TIMEOUT=120000```
+
+- Description:
+	- It will assign same priority to Queue1 and Queue3 and take jobs of Queue2 first, Queue1 second and Queue3 third
+
+* **Error occur if worker parameter not passed properly :** 
+
+```pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a DB_CONFIG=db_config JOB_TIMEOUT=120000```
+
+- Description:
+	- If Queue name is not defined then it will not start worker
+
+* **To stop worker :** 
+
+Syantax : ```pm2 stop [worker id]```
+Command : ```pm2 stop 5```
+
+
+* **To restart worker :** 
+
+Syantax : ```pm2 restart [worker id]```
+Command : ```pm2 restart 5```
+
+
+* **To scale(increase) worker :** 
+
+Syantax : ```pm2 scale [appname] No. of worker```
+Command : ```pm2 scale myAppp 10```
+
+Description : It will create 10 worker of myApp
+
+Command : ```pm2 scale myAppp +3```
+Description : It will add 3 worker of myApp 
+
+* **To delete all worker :** 
+
+Syantax : ```pm2 delete [worker id]```
+Command : ```pm2 delete 5```
+Description : It will delete worker of id 5
+
+Command : ```pm2 delete all```
+Description : It will delete alll worker
+
+* **For Pm2 help :** 
+
+Command : ```pm2 -h```
+Description : It will show all the command and option list of pm2
+
+
+That's all you have to do for starting the Workers
