@@ -144,17 +144,17 @@ Command : ```pm2 stop 5```
 
 * **To delete all worker :** 
 
-- Syantax : ```pm2 delete [worker id]```
-- Command : ```pm2 delete 5```
-- Description : It will delete worker of id 5
+	- Syantax : ```pm2 delete [worker id]```
+	- Command : ```pm2 delete 5```
+	- Description : It will delete worker of id 5
 
-- Command : ```pm2 delete all```
-- Description : It will delete alll worker
+	- Command : ```pm2 delete all```
+	- Description : It will delete alll worker
 
 * **For Pm2 help :** 
 
-- Command : ```pm2 -h```
-- Description : It will show all the command and option list of pm2
+	- Command : ```pm2 -h```
+	- Description : It will show all the command and option list of pm2
 
 
 That's all you have to do for starting the Workers
