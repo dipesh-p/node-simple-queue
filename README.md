@@ -3,6 +3,10 @@ node-simple-queue
 
 A simple queue for NodeJS, with usage similar to Resque in RoR
 
+### Install pm2 globally
+```node
+$> npm install pm2 -g
+```
 
 ### Installing module in Node Applicaiton
 
@@ -50,13 +54,31 @@ Now we can start up a worker to grab some work off of the queue and do the work:
 
 ```node
 $> cd <to-your-project>
-$> node_modules/node-simple-queue/bin/node-worker start/stop QUEUE=Queue1 [options]
+$> pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1,Queue2,Queue3 [options]
+
 ```
 **Options available are as follows:**
 QUEUE - Name of the queue.
 DB_CONFIG - Its the name of configuration in your configuration JSON, if this parameter is passed, then you need to have **NODE_ENV.js** file in **config** folder.
-WORKERS - No of worker process to start. Default:1.
 PID - Path where process ids need to be stored, it is optional.
 JOB_TIMEOUT - It is the time after which if job is running then, it will stop that job and mark it for error, it is in milliseconds Default: 60000.
+
+* **To Start worker without priority :** 
+
+```pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1,Queue2,Queue3 DB_CONFIG=db_config JOB_TIMEOUT=120000```
+
+- Description: 
+	- It will create 2 instance of node-simple-queue for Queue1,Queue2,Queue3,DB_CONFIG,JOB_TIMEOUT passed as arguments
+	- -i 2 : Start 2 instances of application in cluster mode
+
+
+* **To Start worker with priority :** 
+
+```pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -- -a QUEUE=Queue1:153,Queue2:5,Queue3:67 DB_CONFIG=db_config JOB_TIMEOUT=120000```
+
+- Description:
+	- node-simple-queue process job based on queue priority.
+
+
 
 That's all you have to do for starting the Workers to work on 'Queue1' with 4 workers
