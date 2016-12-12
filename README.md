@@ -70,12 +70,21 @@ JOB_TIMEOUT - It is the time after which if job is running then, it will stop th
 NODE_ENV=environments/development pm2 start node_modules/node-simple-queue/bin/node-simple-queue -i 2 -n FCMQueue -- -a QUEUE=FCMQueue DB_CONFIG=queue_db_config JOB_TIMEOUT=120000
 
 
-+-- config
-|	+-- _environments
+config
+|______	environments
 		+-- development.js
-		+-- deve.js
+		+-- dev.js
 		+-- production.js
 		+-- staging.js
+```
+├─ config/
+│   ├── index.md
+│   ├── environments
+│   │   ├── 00_development.js
+│   │   ├── 01_dev.js
+│   │   ├── 02_production.js
+│   │   ├── 03_staging.js
+```
 
 - Description: 
 	- Create development.js file inside config/environments folder. In that file create key name of 
